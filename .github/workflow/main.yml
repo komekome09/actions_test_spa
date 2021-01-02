@@ -1,0 +1,29 @@
+name: github pages deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup node
+        uses: actions/setup-node@v1
+      - name: npm ci
+        run: npm ci
+        env:
+          CI: true
+      - name: npm build
+        run: npm build
+        env:
+          CI: true
+      - name: deploy gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ screts.GITHUB_TOKEN }}
+          publish_dir: ./build

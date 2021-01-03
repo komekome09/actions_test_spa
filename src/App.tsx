@@ -100,7 +100,27 @@ class FlightData {
 }
 
 class FlightTable extends React.Component {
+  fd_dom: FlightData = new FlightData();
+  fd_int: FlightData = new FlightData();
+  constructor(props: React.FC){
+    super(props);
+    this.fd_dom.getDomesticFlight();
+    this.fd_int.getInternationalFlight();
+  }
+  
   render() {
+    const listItems = this.fd_int.flightsData.map((l) => {
+      <tr>
+        <td>{l.on_time}</td>
+        <td>{l.change_time}</td>
+        <td>{l.destination_jp}</td>
+        <td>{l.destination_en}</td>
+        <td>{l.flight_number}</td>
+        <td>{l.terminal}</td>
+        <td>{l.gate}</td>
+        <td>{l.flight_status}</td>
+      </tr>
+    });
     return (
       <table>
         <thead>
@@ -115,16 +135,7 @@ class FlightTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>18:25</td>
-            <td>18:40</td>
-            <td>福岡</td>
-            <td>Fukuoka</td>
-            <td>JAL 0355</td>
-            <td>1</td>
-            <td>19</td>
-            <td>出発済み</td>
-          </tr>
+          {listItems}
         </tbody>
       </table>
     );
@@ -132,14 +143,6 @@ class FlightTable extends React.Component {
 }
 
 export default class FlightBoard extends React.Component {
-  fd_dom: FlightData = new FlightData();
-  fd_int: FlightData = new FlightData();
-  constructor(props: React.FC){
-    super(props);
-    this.fd_dom.getDomesticFlight();
-    this.fd_int.getInternationalFlight();
-  }
-  
   render() {
     return (
       <div className="App">
